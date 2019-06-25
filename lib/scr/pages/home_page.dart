@@ -4,6 +4,7 @@ import 'package:qrreaderapp/scr/pages/direciones_page.dart';
 import 'package:qrreaderapp/scr/pages/mapas_page.dart';
 
 import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:qrreaderapp/scr/providers/db_provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   _scanQR() async{
     // geo:40.776250712734054,-73.97298231562502
-    String futureString = '';
+    String futureString = 'https://www.udemy.com/flutter-ios-android-fernando-herrera/learn/lecture/14576726#questions';
 
     //try {
     //  futureString = await new QRCodeReader().scan();
@@ -46,11 +47,11 @@ class _HomePageState extends State<HomePage> {
     //  print(e.toString());
     //}
 
-    //print('futureString: $futureString');
-
-    //if(futureString != null){
-    //  print(futureString);
-    //}
+    if(futureString != null){
+      final scan = ScanModel(valor: futureString);
+      DBProvider.db.nuevoScan(scan);
+      
+    }
   }
 
   Widget _crearBottomNavigationBar(){
