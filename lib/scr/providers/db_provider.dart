@@ -75,7 +75,7 @@ class DBProvider {
 
     List<ScanModel> list = res.isNotEmpty 
                             ? res.map((scan) => ScanModel.fromJson(scan)).toList() 
-                            : null;
+                            : [];
     return list;
   }
 
@@ -104,9 +104,9 @@ class DBProvider {
     return res;
   }
 
-  Future<int> deleteAllScan(int id) async {
-    final db = await database;
-    final res = await db.rawDelete('DELETE FROM * Scans');
+  Future<int> deleteAll() async {
+    final db  = await database;
+    final res = await db.rawDelete('DELETE FROM Scans');
     return res;
   }
 

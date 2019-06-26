@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:qrreaderapp/scr/bloc/scans_bloc.dart';
+import 'package:qrreaderapp/scr/models/scan_model.dart';
 
 import 'package:qrreaderapp/scr/pages/direciones_page.dart';
 import 'package:qrreaderapp/scr/pages/mapas_page.dart';
 
 import 'package:qrcode_reader/qrcode_reader.dart';
-import 'package:qrreaderapp/scr/providers/db_provider.dart';
+import 'package:qrreaderapp/scr/utils/utils.dart' as utils;
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final scansBloc = new ScansBloc();
+  
   int currentIndex = 0;
 
   @override
@@ -22,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete_forever),
-            onPressed: (){},
+            onPressed: scansBloc.borrarScanTODOS,
           )
         ],
       ),
@@ -38,8 +42,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _scanQR() async{
-    // geo:40.776250712734054,-73.97298231562502
-    String futureString = 'https://www.udemy.com/flutter-ios-android-fernando-herrera/learn/lecture/14576726#questions';
+    String futureString = 'https://www.udemy.com';
 
     //try {
     //  futureString = await new QRCodeReader().scan();
@@ -49,8 +52,12 @@ class _HomePageState extends State<HomePage> {
 
     if(futureString != null){
       final scan = ScanModel(valor: futureString);
-      DBProvider.db.nuevoScan(scan);
-      
+      scansBloc.agregarScan(scan);
+
+      //final scan2 = ScanModel(valor: 'geo:40.776250712734054,-73.97298231562502');
+      //scansBloc.agregarScan(scan2);
+
+      utils.abrirScan(context, scan);
     }
   }
 
